@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import bankingProducts.ProductTableModel;
+import bankingProducts.ProductManagementView;
 import bankingProducts.Producto;
 import bankingProducts.ProductoDAO;
 import bankingProducts.ProductoDAOMethods;
@@ -87,7 +88,9 @@ public class panelUI extends JPanel implements ActionListener {
 		
 		JPanel auxCentro = new JPanel();
 		auxCentro.add(botonBorrar);
-		auxCentro.add(botonActualizar);
+		if (typeOfPanel == "userPanel") {
+			auxCentro.add(botonActualizar);
+		}
 		auxCentro.add(botonAgregar);
 		auxCentro.add(botonExtra);		
 		auxCentro.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -118,41 +121,65 @@ public class panelUI extends JPanel implements ActionListener {
 				}
 			}
 			else {
-				prodDao.crearTablaProductos();
+				//Create table product if not exist
+				try {
+					prodDao.crearTablaProductos();
+				} catch(Exception error){}
+				
+				// generate product in db
+				Producto productCreated = ProductManagementView.agregarProducto();
+				
+				// if product was created it add in table view
+				if(productCreated != null) {
+					// UI create
+					modeloTablaProducto.getContenido().add(productCreated);
+					modeloTablaProducto.fireTableDataChanged();
+				}
+				
 			}
 		}
 		
 		if (e.getSource() == botonActualizar) {
-			if (typeOfPanel == "userPanel") {
-				int filaSeleccionada = this.tabla.getSelectedRow();
-				Usuario usuarioSelected = this.modelo.getContenido().get(filaSeleccionada);
-				List<Object> list = UserManagementView.actualizarUsuario(usuarioSelected.getUser());
-				Usuario userModified = new Usuario(usuarioSelected.getUser(), (String) list.get(0), (String) list.get(1), (Integer) list.get(2), (String) list.get(3) );
-				//new Usuario(usuarioSelected.getUser(), passwordInput, emailInput, dniInput, addressInput);
-				
-				// DB update
-				dao.actualizaUsuario(userModified);
-				
-				// UI remove
-				this.modelo.getContenido().remove(filaSeleccionada);
-				
-				// UI add
-				modelo.getContenido().add(userModified);// UI add
-	
-				modelo.fireTableDataChanged();
-			}
+			int filaSeleccionada = this.tabla.getSelectedRow();
+			Usuario usuarioSelected = this.modelo.getContenido().get(filaSeleccionada);
+			List<Object> list = UserManagementView.actualizarUsuario(usuarioSelected.getUser());
+			Usuario userModified = new Usuario(usuarioSelected.getUser(), (String) list.get(0), (String) list.get(1), (Integer) list.get(2), (String) list.get(3) );
+			//new Usuario(usuarioSelected.getUser(), passwordInput, emailInput, dniInput, addressInput);
+			
+			// DB update
+			dao.actualizaUsuario(userModified);
+			
+			// UI remove
+			this.modelo.getContenido().remove(filaSeleccionada);
+			
+			// UI add
+			modelo.getContenido().add(userModified);// UI add
+
+			modelo.fireTableDataChanged();
 		}
 		
 		if(e.getSource() == botonBorrar) {
 			int filaSeleccionada = this.tabla.getSelectedRow();
-			Usuario usuario = this.modelo.getContenido().get(filaSeleccionada);
 			
-			// DB delete
-			UserManagementView.borrarUsuario(usuario.getUser());
-			
-			// UI delete
-			this.modelo.getContenido().remove(filaSeleccionada);
-			modelo.fireTableDataChanged();
+			if (typeOfPanel == "userPanel") {
+				Usuario usuario = this.modelo.getContenido().get(filaSeleccionada);
+				
+				// DB delete
+				UserManagementView.borrarUsuario(usuario.getUser());
+				
+				// UI delete
+				this.modelo.getContenido().remove(filaSeleccionada);
+				modelo.fireTableDataChanged();
+			} else {
+				Producto productSelected = this.modeloTablaProducto.getContenido().get(filaSeleccionada);
+				
+				// DB delete
+				ProductManagementView.deleteProduct(productSelected.getUser(), productSelected.getCuentaTipo());
+				
+				// UI delete
+				this.modeloTablaProducto.getContenido().remove(filaSeleccionada);
+				modeloTablaProducto.fireTableDataChanged();
+			}
 		} 
 		if(e.getSource() == botonExtra) {
 			if (typeOfPanel == "userPanel") {

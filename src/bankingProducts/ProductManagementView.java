@@ -9,7 +9,7 @@ public class ProductManagementView {
 	private static ProductoDAO daoProducto = new ProductoDAOMethods();
 
 
-	public static Usuario agregarProducto() {
+	public static Producto agregarProducto() {
 		// TODO: add validations for data
 		String userInput = new Modal().displayInputModal("Please insert user name: ");
 		Producto productCreated = null;
@@ -31,38 +31,16 @@ public class ProductManagementView {
 			String accountTypeInput = new Modal().displayInputModal("Please insert account type: ");
 			
 			if (accountTypeInput != null) {
-				String passwordInput = new Modal().displayInputModal("Please insert account type: ");
+				productCreated = new Producto(userInput, accountTypeInput, 0, 0, 0);
 				
-				// Validation Password
-				Boolean validPassword = false;
-				do {
-					try {
-						PasswordValidator.validatePassword(passwordInput);
-						validPassword = true;
-					} catch (Exception error) {
-						new Modal().displayErrorModal(error.toString());
-						validPassword = false;
-						passwordInput = new Modal().displayInputModal("Please insert user password: ");
-					}
-				} while(validPassword == false);
-				
-				
-				if (passwordInput != null) {
-					String addressInput = new Modal().displayInputModal("Please insert user address: ");
-					
-					if (addressInput != null) {
-						Integer dniInput = Integer.parseInt(new Modal().displayInputModal("Please insert user DNI: "));
-						
-						if (dniInput != null) {
-							productCreated = new Usuario(userInput, accountTypeInput, emailInput, dniInput, addressInput);
-							
-							// DB create
-							daoProducto.crearProducto(productCreated);
-						}
-					}
-				}
+				// DB create
+				daoProducto.crearProducto(productCreated);
 			}
 		}
 		return(productCreated);
+	}
+	
+	public static void deleteProduct(String user, String accountType) {
+		daoProducto.borraProducto(user, accountType);
 	}
 }

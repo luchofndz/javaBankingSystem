@@ -16,7 +16,7 @@ import validationsPackage.UsuarioDAOException;
 
 public class ProductoDAOMethods implements ProductoDAO {
 	
-    public void crearTablaProductos() {
+	public void crearTablaProductos() {
         try {
         	new ProductoDAOCrudSQL().crearTablaProductos();
 		} catch (ProductoDAOException e) {

@@ -8,7 +8,7 @@ public interface ProductoDAO {
 	
 	void eliminarTablaProductos();
 
-	void crearProducto(Producto unUsuario);
+	void crearProducto(Producto product);
 
 	void borraProducto(String user, String cuentaTipo);
 
