@@ -72,13 +72,19 @@ public class panelUI extends JPanel implements ActionListener {
 		JPanel panelBasico = new JPanel();
 		panelBasico.setLayout(new BorderLayout());
 		
-		if (typeOfPanel == "userPanel" || typeOfPanel == "productPanel") {
+		if (typeOfPanel == "userPanel" || typeOfPanel == "productPanel" || typeOfPanel == "productsUserPanel") {
 			JPanel aux = new JPanel();
-			JLabel title = new JLabel("ADD, DELETE OR MODIFY USERS");
+			JLabel title = new JLabel("ADD, DELETE OR MODIFY");
+			if (typeOfPanel == "productsUserPanel") {
+				title = new JLabel("SELECT AN ACCOUNT TO MAKE TRANSFERENCES");
+			}
 			aux.add(title);
 			panelBasico.add(aux, BorderLayout.NORTH);
 	
 			JLabel labelDescription = new JLabel("for delete or update please select a row");
+			if (typeOfPanel == "productsUserPanel") {
+				labelDescription = new JLabel("for cards are not available transferences");
+			}
 			panelBasico.add(labelDescription, BorderLayout.SOUTH);
 		}
 
@@ -121,7 +127,7 @@ public class panelUI extends JPanel implements ActionListener {
 			List<Usuario> lista = dao.listaTodosLosUsuarios();
 			modelo.setContenido(lista);
 			modelo.fireTableDataChanged();
-		} else if (typeOfPanel == "productPanel") {
+		} else if (typeOfPanel == "productPanel" || typeOfPanel == "productsUserPanel") {
 			List<Producto> lista = prodDao.listaTodosLosProductosDeUsuario();
 			modeloTablaProducto.setContenido(lista);
 			modeloTablaProducto.fireTableDataChanged();
@@ -211,10 +217,7 @@ public class panelUI extends JPanel implements ActionListener {
 			}
 		}
 		if (e.getSource() == adminButton)  {
-			System.out.println("HEREH");
 			UserManagementView.displayLoginView(false);
-			// UserManagementView adminView = new UserManagementView();
-			// adminView.displayLoginView();
 		}
 		if (e.getSource() == userButton)  {
 			UserManagementView.displayLoginView(true);
