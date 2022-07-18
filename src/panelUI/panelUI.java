@@ -41,6 +41,7 @@ public class panelUI extends JPanel implements ActionListener {
 	private JButton botonExtra;
 	private JButton userButton;
 	private JButton adminButton;
+	private JButton transferenceButton;
 	private String typeOfPanel;
 	
 	private UsuarioDAO dao = new UsuarioDAOH2Impl();
@@ -210,7 +211,7 @@ public class panelUI extends JPanel implements ActionListener {
 		if(e.getSource() == botonExtra) {
 			if (typeOfPanel == "userPanel") {
 				int filaSeleccionada = this.tabla.getSelectedRow();
-				Usuario usuario = this.modelo.getContenido().get(filaSeleccionada);
+				Usuario usuario = this.modelo.getContenido().get(filaSeleccionada);				
 				
 				// Open view poduct for ser selected
 				UserManagementView.abrirProducto(usuario.getUser());
@@ -221,6 +222,13 @@ public class panelUI extends JPanel implements ActionListener {
 		}
 		if (e.getSource() == userButton)  {
 			UserManagementView.displayLoginView(true);
+		}
+		if (e.getSource() == transferenceButton)  {
+			int filaSeleccionada = this.tabla.getSelectedRow();
+			Producto productSelected = this.modeloTablaProducto.getContenido().get(filaSeleccionada);
+			
+			// TODO: add logic here to transfer money
+			
 		}
 	}
 
