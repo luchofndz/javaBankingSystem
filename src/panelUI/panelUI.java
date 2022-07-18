@@ -1,4 +1,5 @@
 package panelUI;
+import homebankingUserManagementSystem.UserManagementView;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,6 +39,8 @@ public class panelUI extends JPanel implements ActionListener {
 	private JButton botonBorrar;
 	private JButton botonActualizar;
 	private JButton botonExtra;
+	private JButton userButton;
+	private JButton adminButton;
 	private String typeOfPanel;
 	
 	private UsuarioDAO dao = new UsuarioDAOH2Impl();
@@ -56,23 +59,28 @@ public class panelUI extends JPanel implements ActionListener {
 		if (typeOfPanel == "userPanel") {
 			modelo = new UsuarioTableModel();
 			tabla = new JTable(modelo);
-		} else {
+		} else if (typeOfPanel == "productPanel" || typeOfPanel == "productsUserPanel"){
 			modeloTablaProducto = new ProductTableModel();
 			tabla = new JTable(modeloTablaProducto);
 		}
 		
-		scrollPaneParaTabla = new JScrollPane(tabla);
-		this.add(scrollPaneParaTabla);
+		if((typeOfPanel == "userPanel") || (typeOfPanel == "productPanel") || typeOfPanel == "productsUserPanel") {
+			scrollPaneParaTabla = new JScrollPane(tabla);
+			this.add(scrollPaneParaTabla);
+		}
 		
 		JPanel panelBasico = new JPanel();
-		JPanel aux = new JPanel();
-		JLabel title = new JLabel("ADD, DELETE OR MODIFY USERS");
-		aux.add(title);
 		panelBasico.setLayout(new BorderLayout());
-		panelBasico.add(aux, BorderLayout.NORTH);
-
-		JLabel labelDescription = new JLabel("for delete or update please select a row");
-		panelBasico.add(labelDescription, BorderLayout.SOUTH);
+		
+		if (typeOfPanel == "userPanel" || typeOfPanel == "productPanel") {
+			JPanel aux = new JPanel();
+			JLabel title = new JLabel("ADD, DELETE OR MODIFY USERS");
+			aux.add(title);
+			panelBasico.add(aux, BorderLayout.NORTH);
+	
+			JLabel labelDescription = new JLabel("for delete or update please select a row");
+			panelBasico.add(labelDescription, BorderLayout.SOUTH);
+		}
 
 		botonBorrar = deleteButton;
 		botonBorrar.addActionListener(this);
@@ -87,12 +95,24 @@ public class panelUI extends JPanel implements ActionListener {
 		botonExtra.addActionListener(this);
 		
 		JPanel auxCentro = new JPanel();
-		auxCentro.add(botonBorrar);
+		if (typeOfPanel == "userPanel" || typeOfPanel == "productPanel") {
+			auxCentro.add(botonBorrar);
+			auxCentro.add(botonAgregar);
+			auxCentro.add(botonExtra);
+		}
 		if (typeOfPanel == "userPanel") {
 			auxCentro.add(botonActualizar);
 		}
-		auxCentro.add(botonAgregar);
-		auxCentro.add(botonExtra);		
+		if (typeOfPanel == "modeSelectionPanel") {
+			userButton = addButton;
+			userButton.addActionListener(this);
+			
+			adminButton = extraButton;
+			adminButton.addActionListener(this);
+			auxCentro.add(userButton);
+			auxCentro.add(adminButton);
+		}
+	
 		auxCentro.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		panelBasico.add(auxCentro, BorderLayout.CENTER);
 		this.add(panelBasico);
@@ -101,7 +121,7 @@ public class panelUI extends JPanel implements ActionListener {
 			List<Usuario> lista = dao.listaTodosLosUsuarios();
 			modelo.setContenido(lista);
 			modelo.fireTableDataChanged();
-		} else {
+		} else if (typeOfPanel == "productPanel") {
 			List<Producto> lista = prodDao.listaTodosLosProductosDeUsuario();
 			modeloTablaProducto.setContenido(lista);
 			modeloTablaProducto.fireTableDataChanged();
@@ -120,7 +140,7 @@ public class panelUI extends JPanel implements ActionListener {
 					modelo.fireTableDataChanged();
 				}
 			}
-			else {
+			else if (typeOfPanel == "productPanel") {
 				//Create table product if not exist
 				try {
 					prodDao.crearTablaProductos();
@@ -170,7 +190,7 @@ public class panelUI extends JPanel implements ActionListener {
 				// UI delete
 				this.modelo.getContenido().remove(filaSeleccionada);
 				modelo.fireTableDataChanged();
-			} else {
+			} else if (typeOfPanel == "productPanel") {
 				Producto productSelected = this.modeloTablaProducto.getContenido().get(filaSeleccionada);
 				
 				// DB delete
@@ -189,7 +209,16 @@ public class panelUI extends JPanel implements ActionListener {
 				// Open view poduct for ser selected
 				UserManagementView.abrirProducto(usuario.getUser());
 			}
-		} 
+		}
+		if (e.getSource() == adminButton)  {
+			System.out.println("HEREH");
+			UserManagementView.displayLoginView(false);
+			// UserManagementView adminView = new UserManagementView();
+			// adminView.displayLoginView();
+		}
+		if (e.getSource() == userButton)  {
+			UserManagementView.displayLoginView(true);
+		}
 	}
 
 	private Integer parseInt(String displayInputModal) {

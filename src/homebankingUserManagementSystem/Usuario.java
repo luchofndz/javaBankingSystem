@@ -17,8 +17,8 @@ public class Usuario {
         this.user = user;
         this.pass = pass;
         this.email = email;
-        this.setDni(dni);
-        this.setAddress(address);
+        this.dni = dni;
+        this.address = address;
     }
 
     public String getUser() {
@@ -67,8 +67,8 @@ public class Usuario {
                 "user='" + user + '\'' +
                 ", email='" + email + '\'' +
                 ", pass='" + pass + '\'' +
-                ", pass='" + dni + '\'' +
-                ", pass='" + address + '\'' +
+                ", dni='" + dni + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }

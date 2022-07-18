@@ -77,7 +77,7 @@ public class UsuarioDAOH2Impl implements UsuarioDAO {
     public Usuario muestraUsuario(String username) {
     	Usuario user = null;
         try {
-        	user = new UsuarioDAOCrudSQL().muestraUsuario();
+        	user = new UsuarioDAOCrudSQL().muestraUsuario(username);
 		} catch (UsuarioDAOException e) {
 			new Modal().displayErrorModal(e.toString());
 		}

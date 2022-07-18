@@ -41,8 +41,8 @@ public class UsuarioDAOCrudSQL {
 	       return excecuteSqlGetData(sql);
 	 }
 	 
-	 public Usuario muestraUsuario() throws UsuarioDAOException {
-	        String sql = "SELECT * FROM usuarios";
+	 public Usuario muestraUsuario(String username) throws UsuarioDAOException {
+	        String sql = "SELECT * FROM usuarios WHERE USER = '" + username +"'";
 	        List<Usuario> list = excecuteSqlGetData(sql);
 	        return list.get(0);
     }

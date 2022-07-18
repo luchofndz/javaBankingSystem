@@ -27,21 +27,79 @@ public class UserManagementView {
 		// Initialize table definition for user
 		dao.crearTablaUsuarios();
 		
-		this.displayLoginView();
+		// open selection mode (user or admin)
+		this.displaySelectionModeView();
+		
+	
     }
 	
-	public void displayLoginView() {
+	public void displaySelectionModeView() {		
+		JFrame j = new JFrame("WELCOME TO THE HOMEBANKING SYSTEM");
+		j.getContentPane().add(
+			new panelUI(
+				"modeSelectionPanel", 
+				new JButton("I am user"), 
+				new JButton("I am admin"),
+				new JButton(""),
+				new JButton("")
+			)
+		);
+		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		j.pack();
+		j.setVisible(true);
+    }
+	
+	public static void displayLoginView(boolean isUser) {
 		Modal userModal = new Modal();
-		String userInput = userModal.displayInputModal("Welcome to the homebanking user management system, please insert admin user: ");
-		// TODO: Add validations here
+		String userInput = userModal.displayInputModal("Welcome to the homebanking user management system, please insert user: ");
 		
-		Modal passwordModal = new Modal();
-		String passwordInput = userModal.displayInputModal("Welcome " + userInput + ", please insert the password: ");
-		// TODO: Add validations here
-		
-		
-		// TODO: Add conditions, if all ok display view
-		this.displayUserManagementView();
+		if (isUser) {
+			Boolean validUserName = false;
+			Usuario user = null;
+			do {
+				user = dao.muestraUsuario(userInput);
+				if(user != null) {
+					validUserName = true;
+				}
+				else {
+					new Modal().displayErrorModal("Invalid user, please type a valid user...");
+					validUserName = false;
+					userInput = new Modal().displayInputModal("Please insert again user name: ");
+				}
+			} while(validUserName.equals(false));
+			if (validUserName) {
+				Modal passwordModal = new Modal();
+				String passwordInput = userModal.displayInputModal("Welcome " + userInput + ", please insert the password: ");
+				
+				Boolean validPassword = false;
+				String passwordDb = user.getPass();
+				System.out.println(passwordInput);
+				do {
+					if(passwordDb.equals(passwordInput)) {
+						validPassword = true;
+						System.out.println("yes");
+					}
+					else {
+						new Modal().displayErrorModal("Invalid password, please type a valid password...");
+						validPassword = false;
+						passwordInput = new Modal().displayInputModal("Please insert again user password: ");
+					}
+				} while(validPassword.equals(false));
+				if (validPassword) {
+					UserManagementView.displayUserView(userInput);
+				}
+			}
+		} else { 
+			Modal passwordModal = new Modal();
+			String passwordInput = userModal.displayInputModal("Welcome " + userInput + ", please insert the password: ");
+			// TODO: Add validations here
+			
+			// TODO: Add conditions, if all ok display view
+			//this.displayUserManagementView();
+			
+			UserManagementView view = new UserManagementView();
+			view.displayUserManagementView();
+		}
     }
 	
 	public void displayUserManagementView() {
@@ -77,7 +135,7 @@ public class UserManagementView {
 				validUserName = false;
 				userInput = new Modal().displayInputModal("Please insert again user name: ");
 			}
-		} while(validUserName == false);
+		} while(validUserName.equals(false));
 		
 		if (userInput != null) {
 			String emailInput = new Modal().displayInputModal("Please insert user email: ");
@@ -96,7 +154,7 @@ public class UserManagementView {
 						validPassword = false;
 						passwordInput = new Modal().displayInputModal("Please insert user password: ");
 					}
-				} while(validPassword == false);
+				} while(validPassword.equals(false));
 				
 				
 				if (passwordInput != null) {
@@ -159,6 +217,26 @@ public class UserManagementView {
 				new JButton("Cargar nuevo"), 
 				new JButton("Borrar"),
 				new JButton("Actualizar"),
+				new JButton("cerrar")
+			)
+		);
+		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		j.pack();
+		j.setVisible(true);
+	}
+	
+
+	public static void displayUserView(String user) {
+		daoProducto.crearTablaProductos();
+		
+		JFrame j = new JFrame("PRODUCTS VIEW FOR USER: " + user);
+
+		j.getContentPane().add(
+			new panelUI(
+				"productsUserPanel", 
+				new JButton("Transferir"), 
+				new JButton(""),
+				new JButton(""),
 				new JButton("cerrar")
 			)
 		);
