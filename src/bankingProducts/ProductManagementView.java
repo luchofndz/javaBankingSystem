@@ -1,5 +1,7 @@
 package bankingProducts;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import homebankingUserManagementSystem.Modal;
 import homebankingUserManagementSystem.Usuario;
 import validationsPackage.PasswordValidator;
@@ -31,7 +33,8 @@ public class ProductManagementView {
 			String accountTypeInput = new Modal().displayInputModal("Please insert account type: ");
 			
 			if (accountTypeInput != null) {
-				productCreated = new Producto(userInput, accountTypeInput, 0, 0, 0);
+				Integer accountNumber = ThreadLocalRandom.current().nextInt();
+				productCreated = new Producto(accountNumber, userInput, accountTypeInput,  accountNumber, userInput+"Alias", 0, 0, 10000);
 				
 				// DB create
 				daoProducto.crearProducto(productCreated);

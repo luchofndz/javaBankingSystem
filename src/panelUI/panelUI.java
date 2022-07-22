@@ -119,6 +119,12 @@ public class panelUI extends JPanel implements ActionListener {
 			auxCentro.add(userButton);
 			auxCentro.add(adminButton);
 		}
+		
+		if (typeOfPanel == "productsUserPanel") {
+			transferenceButton = addButton;
+			transferenceButton.addActionListener(this);
+			auxCentro.add(transferenceButton);
+		}
 	
 		auxCentro.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		panelBasico.add(auxCentro, BorderLayout.CENTER);
@@ -228,7 +234,17 @@ public class panelUI extends JPanel implements ActionListener {
 			Producto productSelected = this.modeloTablaProducto.getContenido().get(filaSeleccionada);
 			
 			// TODO: add logic here to transfer money
+			String userToTransfer = new Modal().displayInputModal("Please insert Id, Alias or account number to transfer: ");
 			
+			if (userToTransfer != null) {
+				String amountToTransfer = new Modal().displayInputModal("Please insert the amount to transfer: ");
+				
+				if (userToTransfer != null) {
+					// call here transference function
+					//productSelected.
+				}
+			}
+				
 		}
 	}
 

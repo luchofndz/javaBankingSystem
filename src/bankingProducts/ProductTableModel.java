@@ -10,19 +10,21 @@ public class ProductTableModel extends AbstractTableModel {
 	 * INDICES DE MIS COLUMNAS
 	 */
 	private static final int COLUMNA_TIPO = 0;
-	private static final int COLUMNA_DEBITO = 1;
-	private static final int COLUMNA_CREDITO = 2;
-	private static final int COLUMNA_TOTAL = 3;
+	private static final int COLUMNA_NUMERO = 1;
+	private static final int COLUMNA_ALIAS = 2;
+	private static final int COLUMNA_DEBITO = 3;
+	private static final int COLUMNA_CREDITO = 4;
+	private static final int COLUMNA_TOTAL = 5;
 	
 	/**
 	 * NOMBRES DE LOS ENCABEZADOS
 	 */
-	private String[] nombresColumnas = {"CtaTipo", "Debito", "Credito", "Total"};
+	private String[] nombresColumnas = {"CtaTipo", "Numero", "Alias", "Debito", "Credito", "Total"};
 	
 	/**
 	 * TIPOS DE CADA COLUMNA (EN EL MISMO ORDEN DE LOS ENCABEZADOS)
 	 */
-	private Class[] tiposColumnas = {String.class, String.class, Integer.class, Integer.class, Integer.class};
+	private Class[] tiposColumnas = {String.class, Integer.class, String.class, Integer.class, Integer.class, Integer.class};
 	
 
 	private List<Producto> contenido;
@@ -81,6 +83,12 @@ public class ProductTableModel extends AbstractTableModel {
 		switch(columnIndex) {
 		case COLUMNA_TIPO:
 			result = u.getCuentaTipo();
+			break;
+		case COLUMNA_NUMERO:
+			result = u.getNumero();
+			break;
+		case COLUMNA_ALIAS:
+			result = u.getAlias();
 			break;
 		case COLUMNA_DEBITO:
 			result = u.getDebito();

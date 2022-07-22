@@ -6,13 +6,28 @@ public class Producto {
     private Integer debito;
     private Integer credito;
     private Integer total;
+    private Integer id;
+    private Integer numero;
+    private String alias;
 
-    public Producto(String user, String cuentaTipo, Integer debito, Integer credito, Integer total) {
+    public Producto(
+    		Integer id,
+    		String user, 
+    		String cuentaTipo,
+    		Integer numero,
+    		String alias,
+    		Integer debito, 
+    		Integer credito, 
+    		Integer total
+    ) {
+        this.setId(id);
         this.setUser(user);
         this.setCuentaTipo(cuentaTipo);
         this.setDebito(debito);
         this.setCredito(credito);
         this.setTotal(total);
+        this.setNumero(numero);
+        this.setAlias(alias);
     }
 
 	public String getUser() {
@@ -53,5 +68,29 @@ public class Producto {
 
 	public void setTotal(Integer total) {
 		this.total = total;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Integer numero) {
+		this.numero = numero;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 }

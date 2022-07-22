@@ -35,12 +35,14 @@ public class ProductoDAOMethods implements ProductoDAO {
     public void crearProducto(Producto producto) {
         String user = producto.getUser();
         String cuentaTipo = producto.getCuentaTipo();
+    	Integer numero = producto.getNumero();
+    	String alias = producto.getAlias();
         Integer debito = producto.getDebito();
         Integer credito = producto.getCredito();
         Integer total = producto.getTotal();
 
         try {
-			new ProductoDAOCrudSQL().crearProducto(user, cuentaTipo, debito, credito, total);
+			new ProductoDAOCrudSQL().crearProducto(user, cuentaTipo, numero, alias, debito, credito, total);
 		} catch (ProductoDAOException e) {
 			new Modal().displayErrorModal(e.toString());
 		}
@@ -72,6 +74,14 @@ public class ProductoDAOMethods implements ProductoDAO {
 			new Modal().displayErrorModal(e.toString());
 		}
 		return list;
+	}
+	
+	public void transferFromTo(Producto userFrom, String userTo, Integer amount) {
+        try {
+			new ProductoDAOCrudSQL().transferFromTo(userFrom, userTo, amount);
+		} catch (ProductoDAOException e) {
+			new Modal().displayErrorModal(e.toString());
+		}
 	}
 	
 }

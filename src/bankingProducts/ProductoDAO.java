@@ -13,6 +13,8 @@ public interface ProductoDAO {
 	void borraProducto(String user, String cuentaTipo);
 
 	void actualizaProducto(Producto unUsuario);
+	
+	void transferFromTo(Producto userFrom, String userTo, Integer amount);
 
 	Producto muestraProducto(String username);
 

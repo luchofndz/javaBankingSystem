@@ -15,7 +15,7 @@ import validationsPackage.UsuarioDAOException;
 public class ProductoDAOCrudSQL {
 	
 	 public void crearTablaProductos() throws ProductoDAOException {
-		 String sql = "CREATE TABLE productos ( id INTEGER IDENTITY, user VARCHAR(30), cuentaTipo VARCHAR(256), debito INT(256), credito INT(10), total INT(10))";
+		 String sql = "CREATE TABLE productos ( id INTEGER IDENTITY, user VARCHAR(30), cuentaTipo VARCHAR(256), numero INT(256), alias VARCHAR(35), debito INT(256), credito INT(10), total INT(10))";
 		 excecuteSqlQuery(sql);
 	 }
 	 
@@ -24,8 +24,8 @@ public class ProductoDAOCrudSQL {
 		 excecuteSqlQuery(sql);
 	 }
 
-	 public void crearProducto(String user, String cuentaTipo, Integer debito, Integer credito, Integer total) throws ProductoDAOException {
-		 String sql = "INSERT INTO productos (user, cuentaTipo, debito, credito, total) VALUES ('" + user + "', '" + cuentaTipo + "', '" + debito + "', '" + credito + "', '" + total + "')";
+	 public void crearProducto(String user, String cuentaTipo, Integer numero, String alias, Integer debito, Integer credito, Integer total) throws ProductoDAOException {
+		 String sql = "INSERT INTO productos (user, cuentaTipo, numero, alias, debito, credito, total) VALUES ('" + user + "', '" + cuentaTipo + "', '" + numero + "', '" + alias + "', '" + debito + "', '" + credito + "', '" + total + "')";
 		 excecuteSqlQuery(sql);
 	 } 
 
@@ -34,9 +34,21 @@ public class ProductoDAOCrudSQL {
 	        excecuteSqlQuery(sql);
 	 }
 	 
+	 // TODO: update parameters and sql with new params
 	 public void actualizaUsuario(String user, String email, String cuentaTipo, Integer debito, Integer credito, Integer total) throws ProductoDAOException {
 	        String sql = "UPDATE productos set email = '" + email + "', cuentaTipo = '" + cuentaTipo + "', debito = '" + debito + "', credito = '" + credito + "', total = '" + total + "' WHERE user = '" + user + "'";
 	        excecuteSqlQuery(sql);
+	 }
+	 
+	 public void transferFromTo(Producto userFrom, String userTo, Integer amount) throws ProductoDAOException {
+		 // sql get user data, modify user from ad user to
+		 
+		 
+	        String sql = "UPDATE productos set debito = '" + userFrom.getDebito() + amount + "', total = total - '" + amount + "' WHERE numero = '" + userFrom.getNumero() + "'";
+	        excecuteSqlQuery(sql);
+	        
+	        String sqlUserTo = "UPDATE productos set credito = credito + '" + amount + "', total = total + '" + amount + "' WHERE numero = '" + userTo + "' OR alias = '" + userTo  + "' OR user = '" + userTo + "'";
+	        excecuteSqlQuery(sqlUserTo);
 	 }
 
 	 public void excecuteSqlQuery(String sql) throws ProductoDAOException {
@@ -78,10 +90,12 @@ public class ProductoDAOCrudSQL {
 	            	int id = rs.getInt("id");
 	                String nombreUsuario = rs.getString("user");
 	                String cuentaTipo = rs.getString("cuentaTipo");
+	                int numero = rs.getInt("numero");
+	                String alias = rs.getString("alias");
 	                int debito = rs.getInt("debito");
 	                int credito = rs.getInt("credito");
 	                int total = rs.getInt("total");
-	                Producto producto = new Producto(nombreUsuario, cuentaTipo, debito, credito, total);
+	                Producto producto = new Producto(id, nombreUsuario, cuentaTipo, numero, alias, debito, credito, total);
 	                resultado.add(producto);
 
 	            }
