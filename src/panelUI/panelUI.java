@@ -26,6 +26,7 @@ import homebankingUserManagementSystem.Usuario;
 import homebankingUserManagementSystem.UsuarioDAO;
 import homebankingUserManagementSystem.UsuarioDAOH2Impl;
 import homebankingUserManagementSystem.UsuarioTableModel;
+import homebankingUserManagementSystem.UserService;
 import validationsPackage.PasswordValidator;
 import validationsPackage.TextValidator;
 
@@ -46,6 +47,7 @@ public class panelUI extends JPanel implements ActionListener {
 	
 	private UsuarioDAO dao = new UsuarioDAOH2Impl();
 	private ProductoDAO prodDao = new ProductoDAOMethods();
+	private UserService userService = new UserService();
 
 	public panelUI(String typeOfPanel, JButton addButton, JButton deleteButton, JButton updateButton, JButton extraButton) {
 		super();
@@ -131,9 +133,16 @@ public class panelUI extends JPanel implements ActionListener {
 		this.add(panelBasico);
 		
 		if (typeOfPanel == "userPanel") {
-			List<Usuario> lista = dao.listaTodosLosUsuarios();
-			modelo.setContenido(lista);
-			modelo.fireTableDataChanged();
+//			List<Usuario> lista = dao.listaTodosLosUsuarios();
+//			modelo.setContenido(lista);
+//			modelo.fireTableDataChanged();
+			try {
+				List<Usuario> lista = userService.listaTodosLosUsuarios();
+				modelo.setContenido(lista);
+				modelo.fireTableDataChanged();
+			} catch (Exception e) {
+				new Modal().displayInputModal("Error: problema al cargar la lista de usuarios, error: " + e);
+			}
 		} else if (typeOfPanel == "productPanel" || typeOfPanel == "productsUserPanel") {
 			List<Producto> lista = prodDao.listaTodosLosProductosDeUsuario();
 			modeloTablaProducto.setContenido(lista);
