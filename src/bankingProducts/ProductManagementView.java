@@ -5,10 +5,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import homebankingUserManagementSystem.Modal;
 import homebankingUserManagementSystem.Usuario;
 import validationsPackage.PasswordValidator;
+import validationsPackage.ProductServiceException;
 import validationsPackage.TextValidator;
 
 public class ProductManagementView {
-	private static ProductoDAO daoProducto = new ProductoDAOMethods();
+//	private static ProductoDAO daoProducto = new ProductoDAOMethods();
+	private static ProductService productService = new ProductService();
 
 
 	public static Producto agregarProducto() {
@@ -37,13 +39,21 @@ public class ProductManagementView {
 				productCreated = new Producto(accountNumber, userInput, accountTypeInput,  accountNumber, userInput+"Alias", 0, 0, 10000);
 				
 				// DB create
-				daoProducto.crearProducto(productCreated);
+				try {
+					productService.crearProducto(productCreated);
+				} catch (ProductServiceException productCreateError) {
+					new Modal().displayErrorModal(productCreateError.toString());
+				}
 			}
 		}
 		return(productCreated);
 	}
 	
 	public static void deleteProduct(String user, String accountType) {
-		daoProducto.borraProducto(user, accountType);
+		try {
+			productService.borraProducto(user, accountType);
+		} catch (ProductServiceException productDeleteError) {
+			new Modal().displayErrorModal(productDeleteError.toString());
+		}
 	}
 }

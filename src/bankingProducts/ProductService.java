@@ -12,8 +12,7 @@ public class ProductService {
 	
 	public void crearTablaProductos() throws ProductServiceException {
         try {
-        	new ProductoDAOCrudSQL(
-        			).crearTablaProductos();
+        	new ProductoDAOCrudSQL().crearTablaProductos();
 		} catch (ProductoDAOException e) {
 			throw new ProductServiceException(e);
 		}
@@ -27,28 +26,20 @@ public class ProductService {
 //		}
     }
 
-    public void crearProducto(Producto producto) {
-//        String user = producto.getUser();
-//        String cuentaTipo = producto.getCuentaTipo();
-//    	Integer numero = producto.getNumero();
-//    	String alias = producto.getAlias();
-//        Integer debito = producto.getDebito();
-//        Integer credito = producto.getCredito();
-//        Integer total = producto.getTotal();
-//
-//        try {
-//			new ProductoDAOCrudSQL().crearProducto(user, cuentaTipo, numero, alias, debito, credito, total);
-//		} catch (ProductoDAOException e) {
-//			new Modal().displayErrorModal(e.toString());
-//		}
+    public void crearProducto(Producto producto) throws ProductServiceException {
+        try {
+			prodDao.crearProducto(producto);
+		} catch (Exception e) {
+			throw new ProductServiceException(e);
+		}
     }
 
-	public void borraProducto(String user, String cuentaTipo) {
-//        try {
-//			new ProductoDAOCrudSQL().borraProducto(user, cuentaTipo);
-//		} catch (ProductoDAOException e) {
-//			new Modal().displayErrorModal(e.toString());
-//		}
+	public void borraProducto(String user, String cuentaTipo) throws ProductServiceException {
+        try {
+        	prodDao.borraProducto(user, cuentaTipo);
+		} catch (Exception e) {
+			throw new ProductServiceException(e);
+		}
 	}
 
 	public void actualizaProducto(Producto unUsuario) {
@@ -71,11 +62,11 @@ public class ProductService {
    		return list;
 	}
 	
-	public void transferFromTo(Producto userFrom, String userTo, Integer amount) {
-//        try {
-//			new ProductoDAOCrudSQL().transferFromTo(userFrom, userTo, amount);
-//		} catch (ProductoDAOException e) {
-//			new Modal().displayErrorModal(e.toString());
-//		}
+	public void transferFromTo(Producto userFrom, String userTo, Integer amount) throws ProductServiceException {
+        try {
+			new ProductoDAOCrudSQL().transferFromTo(userFrom, userTo, amount);
+		} catch (ProductoDAOException e) {
+			throw new ProductServiceException(e);
+		}
 	}
 }

@@ -29,6 +29,7 @@ import homebankingUserManagementSystem.UsuarioDAOH2Impl;
 import homebankingUserManagementSystem.UsuarioTableModel;
 import homebankingUserManagementSystem.UserService;
 import validationsPackage.PasswordValidator;
+import validationsPackage.ProductServiceException;
 import validationsPackage.TextValidator;
 import validationsPackage.UsuarioServicioException;
 
@@ -168,8 +169,8 @@ public class panelUI extends JPanel implements ActionListener {
 				try {
 					productService.crearTablaProductos();
 //					prodDao.crearTablaProductos();
-				} catch(Exception error){
-					new Modal().displayInputModal("Error: problema al crear tabla de productos, error: " + e);
+				} catch(ProductServiceException addProductError){
+					new Modal().displayInputModal("Error: problema al crear tabla de productos, error: " + addProductError);
 				}
 				
 				// generate product in db
@@ -258,7 +259,12 @@ public class panelUI extends JPanel implements ActionListener {
 				
 				if (userToTransfer != null) {
 					// transference function
-					prodDao.transferFromTo(productSelected, userToTransfer, Integer.parseInt(amountToTransfer));
+					
+					try {
+						productService.transferFromTo(productSelected, userToTransfer, Integer.parseInt(amountToTransfer));
+					} catch (ProductServiceException transferenceException) {
+						new Modal().displayErrorModal(transferenceException.toString());
+					}
 				}
 			}
 				

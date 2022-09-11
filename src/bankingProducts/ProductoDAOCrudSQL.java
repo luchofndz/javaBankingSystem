@@ -47,11 +47,24 @@ public class ProductoDAOCrudSQL {
 	        String sql = "UPDATE productos set debito = '" + userFrom.getDebito() + amount + "', total = total - '" + amount + "' WHERE numero = '" + userFrom.getNumero() + "'";
 	        excecuteSqlQuery(sql);
 	        
-	        String sqlUserTo = "UPDATE productos set credito = credito + '" + amount + "', total = total + '" + amount + "' WHERE numero = '" + userTo + "' OR alias = '" + userTo  + "' OR user = '" + userTo + "'";
+	        boolean isNumeric = userTo.chars().allMatch( Character::isDigit );
+	        
+	        String sqlUserTo = "UPDATE productos set credito = credito + '" + amount + "', total = total + '" + amount + "' WHERE ";
+	        if(isNumeric) {
+	        	sqlUserTo += "numero = '" + userTo + "'";
+	        } else {
+	        	sqlUserTo +=  "alias = '" + userTo  + "' OR user = '" + userTo + "'";
+	        }
+	        
 	        excecuteSqlQuery(sqlUserTo);
 	 }
 
-	 public void excecuteSqlQuery(String sql) throws ProductoDAOException {
+	 private String parseInt(String userTo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void excecuteSqlQuery(String sql) throws ProductoDAOException {
 	        Connection c = DBManager.connect();
 	        try {
 	            Statement s = c.createStatement();
