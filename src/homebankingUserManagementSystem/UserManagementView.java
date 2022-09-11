@@ -164,7 +164,7 @@ public class UserManagementView {
 						Integer dniInput = Integer.parseInt(new Modal().displayInputModal("Please insert user DNI: "));
 						
 						if (dniInput != null) {
-							userCreated = new Usuario(userInput, passwordInput, emailInput, dniInput, addressInput);
+							userCreated = new Usuario(userInput, emailInput, passwordInput, dniInput, addressInput);
 							
 							// DB create
 							dao.crearUsuario(userCreated);

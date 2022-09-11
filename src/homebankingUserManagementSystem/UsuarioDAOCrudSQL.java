@@ -22,6 +22,7 @@ public class UsuarioDAOCrudSQL {
 	 }
 
 	 public void crearUsuario(String user, String email, String pass, Integer dni, String address) throws UsuarioDAOException {
+		 System.out.println(user + " " + email + " " + pass + " " + dni + " " + address);
 		 String sql = "INSERT INTO usuarios (user, email, pass, dni, address) VALUES ('" + user + "', '" + email + "', '" + pass + "', '" + dni + "', '" + address + "')";
 		 excecuteSqlQuery(sql);
 	 }
