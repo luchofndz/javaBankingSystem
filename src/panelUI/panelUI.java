@@ -20,6 +20,7 @@ import bankingProducts.ProductManagementView;
 import bankingProducts.Producto;
 import bankingProducts.ProductoDAO;
 import bankingProducts.ProductoDAOMethods;
+import bankingProducts.ProductService;
 import homebankingUserManagementSystem.Modal;
 import homebankingUserManagementSystem.UserManagementView;
 import homebankingUserManagementSystem.Usuario;
@@ -29,6 +30,7 @@ import homebankingUserManagementSystem.UsuarioTableModel;
 import homebankingUserManagementSystem.UserService;
 import validationsPackage.PasswordValidator;
 import validationsPackage.TextValidator;
+import validationsPackage.UsuarioServicioException;
 
 public class panelUI extends JPanel implements ActionListener {
 	private JTable tabla;
@@ -45,9 +47,11 @@ public class panelUI extends JPanel implements ActionListener {
 	private JButton transferenceButton;
 	private String typeOfPanel;
 	
-	private UsuarioDAO dao = new UsuarioDAOH2Impl();
+//	TODO: delete this line
+//	private UsuarioDAO dao = new UsuarioDAOH2Impl();
 	private ProductoDAO prodDao = new ProductoDAOMethods();
 	private UserService userService = new UserService();
+	private ProductService productService = new ProductService();
 
 	public panelUI(String typeOfPanel, JButton addButton, JButton deleteButton, JButton updateButton, JButton extraButton) {
 		super();
@@ -133,9 +137,6 @@ public class panelUI extends JPanel implements ActionListener {
 		this.add(panelBasico);
 		
 		if (typeOfPanel == "userPanel") {
-//			List<Usuario> lista = dao.listaTodosLosUsuarios();
-//			modelo.setContenido(lista);
-//			modelo.fireTableDataChanged();
 			try {
 				List<Usuario> lista = userService.listaTodosLosUsuarios();
 				modelo.setContenido(lista);
@@ -165,8 +166,11 @@ public class panelUI extends JPanel implements ActionListener {
 			else if (typeOfPanel == "productPanel") {
 				//Create table product if not exist
 				try {
-					prodDao.crearTablaProductos();
-				} catch(Exception error){}
+					productService.crearTablaProductos();
+//					prodDao.crearTablaProductos();
+				} catch(Exception error){
+					new Modal().displayInputModal("Error: problema al crear tabla de productos, error: " + e);
+				}
 				
 				// generate product in db
 				Producto productCreated = ProductManagementView.agregarProducto();
@@ -189,13 +193,17 @@ public class panelUI extends JPanel implements ActionListener {
 			//new Usuario(usuarioSelected.getUser(), passwordInput, emailInput, dniInput, addressInput);
 			
 			// DB update
-			dao.actualizaUsuario(userModified);
+			try {
+				userService.actualizaUsuario(userModified);
+	     	} catch (Exception errorToModifyUser) {
+	     		new Modal().displayInputModal("Error: problema al actualizar usuario, error: " + errorToModifyUser);
+			}
 			
 			// UI remove
 			this.modelo.getContenido().remove(filaSeleccionada);
 			
 			// UI add
-			modelo.getContenido().add(userModified);// UI add
+			modelo.getContenido().add(userModified);
 
 			modelo.fireTableDataChanged();
 		}

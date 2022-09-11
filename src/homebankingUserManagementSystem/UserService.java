@@ -8,23 +8,28 @@ import validationsPackage.UsuarioServicioException;
 public class UserService {
 	private UsuarioDAO dao = new UsuarioDAOH2Impl();
 
-	public void crearTablaUsuarios() {
+	public void crearTablaUsuarios() throws UsuarioServicioException {
 
     }
     
-    public void eliminarTablaUsuarios() {
+    public void eliminarTablaUsuarios() throws UsuarioServicioException {
    
     }
 
-    public void crearUsuario(Usuario unUsuario) {
+    public void crearUsuario(Usuario unUsuario) throws UsuarioServicioException {
        
     }
 
-    public void borraUsuario(String username) {
+    public void borraUsuario(String username) throws UsuarioServicioException {
        
     }
 
-    public void actualizaUsuario(Usuario unUsuario) {
+    public void actualizaUsuario(Usuario unUsuario) throws UsuarioServicioException {
+        try {
+        	dao.actualizaUsuario(unUsuario);
+		} catch (Exception e) {
+			throw new UsuarioServicioException(e);
+		}
         
     }
     
