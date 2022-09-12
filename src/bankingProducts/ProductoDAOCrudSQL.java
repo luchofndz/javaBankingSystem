@@ -44,7 +44,7 @@ public class ProductoDAOCrudSQL {
 		 // sql get user data, modify user from ad user to
 		 
 		 
-	        String sql = "UPDATE productos set debito = '" + userFrom.getDebito() + amount + "', total = total - '" + amount + "' WHERE numero = '" + userFrom.getNumero() + "'";
+	        String sql = "UPDATE productos set debito = '" + (userFrom.getDebito() + amount) + "', total = total - '" + amount + "' WHERE numero = '" + userFrom.getNumero() + "'";
 	        excecuteSqlQuery(sql);
 	        
 	        boolean isNumeric = userTo.chars().allMatch( Character::isDigit );
@@ -55,7 +55,8 @@ public class ProductoDAOCrudSQL {
 	        } else {
 	        	sqlUserTo +=  "alias = '" + userTo  + "' OR user = '" + userTo + "'";
 	        }
-	        
+	        System.out.println(sql);
+	        System.out.println(sqlUserTo);
 	        excecuteSqlQuery(sqlUserTo);
 	 }
 
