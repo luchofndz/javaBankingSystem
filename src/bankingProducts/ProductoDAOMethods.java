@@ -66,7 +66,7 @@ public class ProductoDAOMethods implements ProductoDAO {
 		return null;
 	}
 
-	public List<Producto> listaTodosLosProductosDeUsuario() {
+	public List<Producto> listaTodosLosProductosDeUsuario(/*Producto unUsuario*/) {
     	List<Producto> list = null;
         try {
         	list = new ProductoDAOCrudSQL().listaTodosLosProductos();

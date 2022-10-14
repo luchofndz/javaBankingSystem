@@ -119,7 +119,7 @@ public class ProductTableModel extends AbstractTableModel {
      * 
      * @param contenido
      */
-    public void setContenido(List<Producto> contenido) {
+	public void setContenido(List<Producto> contenido) {
     	this.contenido = contenido;
     }
 }

@@ -17,7 +17,11 @@ public class UserService {
     }
 
     public void crearUsuario(Usuario unUsuario) throws UsuarioServicioException {
-       
+        /*try {
+			new UsuarioDAOCrudSQL().crearUsuario(user, email, pass, dni, address);
+		} catch (UsuarioDAOException e) {
+			new Modal().displayErrorModal(e.toString());
+		}*/
     }
 
     public void borraUsuario(String username) throws UsuarioServicioException {

@@ -39,9 +39,9 @@ public class UserManagementView {
 			new panelUI(
 				"modeSelectionPanel", 
 				new JButton("I am user"), 
-				new JButton("I am admin"),
 				new JButton(""),
-				new JButton("")
+				new JButton(""),
+				new JButton("I am admin")
 			)
 		);
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
